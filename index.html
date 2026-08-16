@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  />
+
+  <title>Happy Birthday Ekalllll 🎂</title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  />
+
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       WHOLE BIRTHDAY AREA
+  ====================================================== -->
+
+  <div class="birthday-wrapper">
+
+
+    <!-- =================================================
+         TITLE ABOVE THE BOX
+    ================================================== -->
+
+    <h1 class="birthday-title">
+      Happy Birthday Ekalllll 🎂
+    </h1>
+
+
+
+    <!-- =================================================
+         MAIN BOX
+    ================================================== -->
+
+    <div class="phone-frame">
+
+      <div class="main-layout">
+
+
+        <!-- =================================================
+             LEFT SIDE
+        ================================================== -->
+
+        <div class="left-side">
+
+
+          <!-- =================================================
+               CONTENT STAGE
+
+               This area switches between:
+
+               - kazuha.mp4
+               - wishing.mp4
+               - apologize.mp4
+               - birthday quote
+               - picture quote
+          ================================================== -->
+
+          <div
+            class="content-stage"
+            id="contentStage"
+          >
+
+
+            <!-- =============================================
+                 KAZUHA VIDEO
+            ============================================== -->
+
+            <video
+              id="kazuhaVideo"
+              class="stage-content stage-video active"
+              src="assets/video/Kazuha.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+            >
+
+              Your browser does not support video.
+
+            </video>
+
+
+
+            <!-- =============================================
+                 WISHING VIDEO
+            ============================================== -->
+
+            <video
+              id="wishingVideo"
+              class="stage-content stage-video"
+              src="assets/video/wishing.mp4"
+              playsinline
+              preload="auto"
+            >
+
+              Your browser does not support video.
+
+            </video>
+
+
+
+            <!-- =============================================
+                 APOLOGY VIDEO
+            ============================================== -->
+
+            <video
+              id="apologizeVideo"
+              class="stage-content stage-video"
+              src="assets/video/apologize.mp4"
+              playsinline
+              preload="auto"
+            >
+
+              Your browser does not support video.
+
+            </video>
+
+
+
+            <!-- =============================================
+                 QUOTE / TEXT AREA
+            ============================================== -->
+
+            <div
+              id="birthdayMessage"
+              class="stage-content birthday-message"
+            >
+
+              <h2 id="wishTitle">
+                Happy Birthday ✨
+              </h2>
+
+
+              <p id="wishText">
+                Wishing you happiness and beautiful memories.
+              </p>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- =================================================
+               MOVING PHOTO
+
+               The photo comes down when the slider
+               is pulled and moves back up after release.
+          ================================================== -->
+
+          <div
+            class="image-cover"
+            id="fallingImage"
+          >
+
+            <img
+              id="changingImage"
+              src="assets/images/image1.jpg"
+              alt="Birthday memory"
+              draggable="false"
+            />
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             RIGHT SIDE
+        ================================================== -->
+
+        <div class="right-side">
+
+
+          <!-- =================================================
+               SLIDER RAIL
+          ================================================== -->
+
+          <div
+            class="slider-rail"
+            id="sliderRail"
+          >
+
+
+            <!-- Rail line -->
+
+            <div class="rail-line"></div>
+
+
+
+            <!-- Decorative dots -->
+
+            <div class="rail-dots">
+
+              <span></span>
+
+              <span></span>
+
+              <span></span>
+
+              <span></span>
+
+              <span></span>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 SLIDER BUTTON
+            ============================================== -->
+
+            <div
+              class="slider-thumb"
+              id="sliderThumb"
+            >
+
+              🍁
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- =====================================================
+       BACKGROUND MUSIC
+  ====================================================== -->
+
+  <audio
+    id="backgroundMusic"
+    src="assets/audio/music.mp3"
+    preload="auto"
+    loop
+  >
+
+    Your browser does not support audio.
+
+  </audio>
+
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+  <script src="js/script.js"></script>
+
+
+</body>
+
+</html>
