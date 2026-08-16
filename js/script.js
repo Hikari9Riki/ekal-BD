@@ -2,131 +2,214 @@
    ELEMENTS
 ===================================================== */
 
-const rail = document.getElementById("sliderRail");
-const thumb = document.getElementById("sliderThumb");
+/* Slider */
 
-const fallingImage = document.getElementById("fallingImage");
-const changingImage = document.getElementById("changingImage");
+const rail =
+  document.getElementById("sliderRail");
 
-const contentStage = document.getElementById("contentStage");
+const thumb =
+  document.getElementById("sliderThumb");
 
-const kazuhaVideo = document.getElementById("kazuhaVideo");
-const wishingVideo = document.getElementById("wishingVideo");
-const apologizeVideo = document.getElementById("apologizeVideo");
 
-const birthdayMessage = document.getElementById("birthdayMessage");
-const wishTitle = document.getElementById("wishTitle");
-const wishText = document.getElementById("wishText");
+/* Falling / changing image */
 
-const backgroundMusic = document.getElementById("backgroundMusic");
+const fallingImage =
+  document.getElementById("fallingImage");
+
+const changingImage =
+  document.getElementById("changingImage");
+
+
+/* Videos */
+
+const kazuhaVideo =
+  document.getElementById("kazuhaVideo");
+
+const wishingVideo =
+  document.getElementById("wishingVideo");
+
+const apologizeVideo =
+  document.getElementById("apologizeVideo");
+
+
+/* Text content */
+
+const birthdayMessage =
+  document.getElementById("birthdayMessage");
+
+const wishTitle =
+  document.getElementById("wishTitle");
+
+const wishText =
+  document.getElementById("wishText");
+
+
+/* Background music */
+
+const backgroundMusic =
+  document.getElementById("backgroundMusic");
 
 
 /* =====================================================
-   IMAGES
-
-   image4 has been removed.
-   The images will cycle:
-
-   image1 → image2 → image3 → image1...
+   IMAGE LIST
 ===================================================== */
 
 const images = [
-    "assets/images/image1.png",
-    "assets/images/image2.png",
-    "assets/images/image3.png"
+  "assets/images/image1.jpg",
+  "assets/images/image2.jpg",
+  "assets/images/image3.jpg",
+  "assets/images/image4.jpg"
 ];
+
+
+/*
+  0 = image1
+  1 = image2
+  2 = image3
+  3 = image4
+*/
 
 let currentImageIndex = 0;
 
 
 /* =====================================================
-   QUOTES
+   TEXT CONTENT
 ===================================================== */
 
+
+/*
+  This is shown as content number 3
+  in both loops.
+*/
+
 const birthdayQuote = {
-    title: "A Little Wish For You ✨",
-    text: "I hope this new year of your life brings you more happiness, beautiful memories, good people, and many reasons to smile."
+
+  title:
+    "Eppy befday Ekallll✨",
+
+  text:
+    "Semoga kekal semak, kekal comel, kekal sihat, kekal fit and so onnnnnnnn (>_<)."
+
 };
 
-const sorryQuote = {
-    title: "Sorry 😭",
-    text: "Sorry, xde gambar lain, ni je ada... don't know where all the old pictures have gone."
+
+/*
+  This is shown as content number 4
+  in both loops.
+*/
+
+const photoQuote = {
+
+  title:
+    "Sorry 😭",
+
+  text:
+    "Sorry, xde gambar lain, ni je ada... don't know where all the old pictures went 😭"
+
 };
 
 
 /* =====================================================
    CONTENT SEQUENCE
-
-   LOOP 1
-   0 = Kazuha
-   1 = Wishing YouTube
-   2 = Birthday Quote
-   3 = Sorry Quote
-
-   LOOP 2
-   4 = Kazuha
-   5 = Apology YouTube
-   6 = Birthday Quote
-   7 = Sorry Quote
-
-   Then return to 0.
 ===================================================== */
+
+/*
+
+  FIRST LOOP
+
+  0 = kazuha.mp4
+  1 = wishing.mp4
+  2 = birthday quote
+  3 = photo quote
+
+
+  SECOND LOOP
+
+  4 = kazuha.mp4
+  5 = apologize.mp4
+  6 = same birthday quote
+  7 = same photo quote
+
+
+  Then return to step 0.
+
+*/
 
 const contentSequence = [
 
-    /* FIRST LOOP */
+  /* ===================================================
+     FIRST LOOP
+  =================================================== */
 
-    {
-        type: "kazuha"
-    },
+  {
+    type: "kazuha"
+  },
 
-    {
-        type: "youtube",
-        video: wishingVideo
-    },
+  {
+    type: "wishing"
+  },
 
-    {
-        type: "quote",
-        title: birthdayQuote.title,
-        text: birthdayQuote.text
-    },
+  {
+    type: "quote",
+    content: birthdayQuote
+  },
 
-    {
-        type: "quote",
-        title: sorryQuote.title,
-        text: sorryQuote.text
-    },
+  {
+    type: "quote",
+    content: photoQuote
+  },
 
 
-    /* SECOND LOOP */
+  /* ===================================================
+     SECOND LOOP
+  =================================================== */
 
-    {
-        type: "kazuha"
-    },
+  {
+    type: "kazuha"
+  },
 
-    {
-        type: "youtube",
-        video: apologizeVideo
-    },
+  {
+    type: "apologize"
+  },
 
-    {
-        type: "quote",
-        title: birthdayQuote.title,
-        text: birthdayQuote.text
-    },
+  {
+    type: "quote",
+    content: birthdayQuote
+  },
 
-    {
-        type: "quote",
-        title: sorryQuote.title,
-        text: sorryQuote.text
-    }
+  {
+    type: "quote",
+    content: photoQuote
+  }
 
 ];
 
 
-/* Start with Kazuha */
+/*
+  Start with Kazuha.
+*/
 
-let currentContentIndex = 0;
+let contentStep = 0;
+
+
+/* =====================================================
+   MUSIC STATE
+===================================================== */
+
+let musicStarted = false;
+
+let musicFadeInterval = null;
+
+
+/*
+  Background music volume.
+
+  0.2 = quiet
+  0.35 = medium
+  0.6 = louder
+*/
+
+const musicVolume = 0.35;
 
 
 /* =====================================================
@@ -145,77 +228,134 @@ let animationFrame = null;
 
 
 /*
-   How far the slider needs to be pulled
-   before changing content.
+  Minimum amount the slider needs
+  to move before changing content.
+
+  0.08 = 8%
 */
 
 const revealThreshold = 0.08;
 
 
 /* =====================================================
-   MUSIC SETTINGS
+   PRELOAD IMAGES
 ===================================================== */
 
-let musicStarted = false;
+function preloadImages() {
 
+  images.forEach((src) => {
 
-/*
-   Change this to false if you want the background
-   music to KEEP playing while the YouTube videos play.
-*/
+    const img =
+      new Image();
 
-const pauseMusicDuringYouTube = true;
+    img.src =
+      src;
 
+  });
 
-/* Background music volume */
-
-if (backgroundMusic) {
-    backgroundMusic.volume = 0.35;
 }
+
+
+preloadImages();
 
 
 /* =====================================================
    START BACKGROUND MUSIC
 ===================================================== */
 
-function startBackgroundMusic() {
+function startMusic() {
 
-    if (!backgroundMusic) return;
+  /*
+    Do not start again if
+    music already started.
+  */
 
-    if (musicStarted) return;
+  if (musicStarted) {
+    return;
+  }
 
-    musicStarted = true;
 
-    backgroundMusic.play().catch(() => {
-        /*
-           Some browsers may still block autoplay.
-           It will try again on the next interaction.
-        */
+  musicStarted = true;
 
-        musicStarted = false;
+
+  /*
+    Start silently.
+  */
+
+  backgroundMusic.volume = 0;
+
+
+  backgroundMusic
+    .play()
+
+    .then(() => {
+
+      /*
+        Clear old fade timer.
+      */
+
+      if (musicFadeInterval) {
+
+        clearInterval(
+          musicFadeInterval
+        );
+
+      }
+
+
+      let volume = 0;
+
+
+      /*
+        Slowly fade music in.
+      */
+
+      musicFadeInterval =
+        setInterval(() => {
+
+          volume += 0.02;
+
+
+          if (
+            volume >=
+            musicVolume
+          ) {
+
+            volume =
+              musicVolume;
+
+
+            clearInterval(
+              musicFadeInterval
+            );
+
+
+            musicFadeInterval =
+              null;
+
+          }
+
+
+          backgroundMusic.volume =
+            volume;
+
+        }, 70);
+
+    })
+
+    .catch((error) => {
+
+      console.log(
+        "Background music could not start:",
+        error
+      );
+
+
+      musicStarted =
+        false;
+
     });
-}
 
-
-/* =====================================================
-   RESUME MUSIC
-===================================================== */
-
-function resumeBackgroundMusic() {
-
-    if (!backgroundMusic) return;
-
-    backgroundMusic.play()
-        .then(() => {
-
-            musicStarted = true;
-
-        })
-        .catch(() => {
-
-            /* Ignore autoplay restriction */
-
-        });
 }
 
 
@@ -223,105 +363,65 @@ function resumeBackgroundMusic() {
    PAUSE MUSIC
 ===================================================== */
 
-function pauseBackgroundMusic() {
+function pauseMusic() {
 
-    if (!backgroundMusic) return;
+  if (
+    !backgroundMusic.paused
+  ) {
 
     backgroundMusic.pause();
-}
 
-
-/* =====================================================
-   YOUTUBE CONTROL
-
-   Because wishingVideo and apologizeVideo are iframe
-   YouTube videos, .play() and .pause() do NOT work.
-
-   We communicate with YouTube using postMessage.
-===================================================== */
-
-function sendYouTubeCommand(iframe, command, args = []) {
-
-    if (!iframe) return;
-
-    if (!iframe.contentWindow) return;
-
-    const message = JSON.stringify({
-
-        event: "command",
-
-        func: command,
-
-        args: args
-
-    });
-
-    iframe.contentWindow.postMessage(
-        message,
-        "*"
-    );
-}
-
-
-/* =====================================================
-   PLAY YOUTUBE
-===================================================== */
-
-function playYouTube(iframe) {
-
-    if (!iframe) return;
-
-    /*
-       Start video from beginning.
-    */
-
-    sendYouTubeCommand(
-        iframe,
-        "seekTo",
-        [0, true]
-    );
-
-
-    /*
-       Small delay gives YouTube time to process seekTo.
-    */
-
-    setTimeout(() => {
-
-        sendYouTubeCommand(
-            iframe,
-            "playVideo"
-        );
-
-    }, 100);
+  }
 
 }
 
 
 /* =====================================================
-   PAUSE YOUTUBE
+   RESUME MUSIC
 ===================================================== */
 
-function pauseYouTube(iframe) {
+function resumeMusic() {
 
-    if (!iframe) return;
+  if (!musicStarted) {
+    return;
+  }
 
-    sendYouTubeCommand(
-        iframe,
-        "pauseVideo"
-    );
+
+  /*
+    Restore normal volume.
+  */
+
+  backgroundMusic.volume =
+    musicVolume;
+
+
+  backgroundMusic
+    .play()
+    .catch(() => {});
+
 }
 
 
 /* =====================================================
-   STOP ALL YOUTUBE VIDEOS
+   PAUSE ALL VIDEOS
 ===================================================== */
 
-function pauseAllYouTubeVideos() {
+function pauseVideos() {
 
-    pauseYouTube(wishingVideo);
+  if (kazuhaVideo) {
+    kazuhaVideo.pause();
+  }
 
-    pauseYouTube(apologizeVideo);
+
+  if (wishingVideo) {
+    wishingVideo.pause();
+  }
+
+
+  if (apologizeVideo) {
+    apologizeVideo.pause();
+  }
+
 }
 
 
@@ -331,23 +431,40 @@ function pauseAllYouTubeVideos() {
 
 function hideAllContent() {
 
-    const contents = document.querySelectorAll(
-        ".stage-content"
+  if (kazuhaVideo) {
+
+    kazuhaVideo.classList.remove(
+      "active"
     );
 
-    contents.forEach((content) => {
+  }
 
-        content.classList.remove("active");
 
-        content.style.opacity = "0";
+  if (wishingVideo) {
 
-        content.style.visibility = "hidden";
+    wishingVideo.classList.remove(
+      "active"
+    );
 
-        content.style.pointerEvents = "none";
+  }
 
-        content.style.zIndex = "1";
 
-    });
+  if (apologizeVideo) {
+
+    apologizeVideo.classList.remove(
+      "active"
+    );
+
+  }
+
+
+  if (birthdayMessage) {
+
+    birthdayMessage.classList.remove(
+      "active"
+    );
+
+  }
 
 }
 
@@ -356,403 +473,448 @@ function hideAllContent() {
    SHOW CONTENT
 ===================================================== */
 
-function activateContent(element) {
+function showContent(step) {
 
-    if (!element) return;
+  const item =
+    contentSequence[step];
 
-    element.classList.add("active");
 
-    element.style.opacity = "1";
+  if (!item) {
+    return;
+  }
 
-    element.style.visibility = "visible";
 
-    element.style.zIndex = "5";
+  /*
+    Hide old content.
+  */
 
+  hideAllContent();
 
-    /*
-       YouTube needs pointer events so the user
-       can use its controls.
-    */
 
-    if (element.tagName === "IFRAME") {
+  /*
+    Pause all videos before
+    showing a new one.
+  */
 
-        element.style.pointerEvents = "auto";
+  pauseVideos();
 
-    } else {
 
-        element.style.pointerEvents = "none";
+  /* ===================================================
+     KAZUHA VIDEO
+  =================================================== */
 
-    }
+  if (
+    item.type ===
+    "kazuha"
+  ) {
 
-}
-
-
-/* =====================================================
-   SHOW KAZUHA
-===================================================== */
-
-function showKazuha() {
-
-    hideAllContent();
-
-    pauseAllYouTubeVideos();
-
-
-    /* Show Kazuha */
-
-    activateContent(kazuhaVideo);
-
-
-    /* Restart Kazuha */
-
-    if (kazuhaVideo) {
-
-        try {
-
-            kazuhaVideo.currentTime = 0;
-
-        } catch (error) {}
-
-
-        kazuhaVideo.play().catch(() => {});
-
-    }
-
-
-    /* Bring background music back */
-
-    resumeBackgroundMusic();
-
-}
-
-
-/* =====================================================
-   SHOW YOUTUBE VIDEO
-===================================================== */
-
-function showYouTubeVideo(video) {
-
-    hideAllContent();
-
-
-    /* Pause Kazuha */
-
-    if (kazuhaVideo) {
-
-        kazuhaVideo.pause();
-
-    }
-
-
-    /* Stop any other YouTube video */
-
-    pauseAllYouTubeVideos();
-
-
-    /* Show selected YouTube */
-
-    activateContent(video);
-
-
-    /*
-       Stop background music so it does not overlap
-       with the YouTube video's sound.
-    */
-
-    if (pauseMusicDuringYouTube) {
-
-        pauseBackgroundMusic();
-
-    }
-
-
-    /* Play YouTube */
-
-    playYouTube(video);
-
-}
-
-
-/* =====================================================
-   SHOW QUOTE
-===================================================== */
-
-function showQuote(title, text) {
-
-    hideAllContent();
-
-    pauseAllYouTubeVideos();
-
-
-    if (kazuhaVideo) {
-
-        kazuhaVideo.pause();
-
-    }
-
-
-    wishTitle.textContent = title;
-
-    wishText.textContent = text;
-
-
-    activateContent(birthdayMessage);
-
-
-    /*
-       Restart quote entrance animation
-    */
-
-    birthdayMessage.classList.remove(
-        "message-change"
+    kazuhaVideo.classList.add(
+      "active"
     );
 
 
     /*
-       Force browser to refresh animation
+      Restart Kazuha video.
     */
 
-    void birthdayMessage.offsetWidth;
+    try {
 
+      kazuhaVideo.currentTime = 0;
+
+    }
+
+    catch (error) {}
+
+
+    /*
+      Kazuha remains muted so
+      background music can play.
+    */
+
+    kazuhaVideo.muted = true;
+
+
+    kazuhaVideo
+      .play()
+      .catch((error) => {
+
+        console.log(
+          "Kazuha video could not play:",
+          error
+        );
+
+      });
+
+
+    /*
+      Background music continues.
+    */
+
+    resumeMusic();
+
+
+    return;
+
+  }
+
+
+  /* ===================================================
+     WISHING VIDEO
+  =================================================== */
+
+  if (
+    item.type ===
+    "wishing"
+  ) {
+
+    wishingVideo.classList.add(
+      "active"
+    );
+
+
+    /*
+      Restart from beginning.
+    */
+
+    try {
+
+      wishingVideo.currentTime = 0;
+
+    }
+
+    catch (error) {}
+
+
+    /*
+      Pause background music so
+      the video's own audio is clear.
+    */
+
+    pauseMusic();
+
+
+    wishingVideo
+      .play()
+      .catch((error) => {
+
+        console.log(
+          "Wishing video could not play:",
+          error
+        );
+
+      });
+
+
+    return;
+
+  }
+
+
+  /* ===================================================
+     APOLOGY VIDEO
+  =================================================== */
+
+  if (
+    item.type ===
+    "apologize"
+  ) {
+
+    apologizeVideo.classList.add(
+      "active"
+    );
+
+
+    /*
+      Restart from beginning.
+    */
+
+    try {
+
+      apologizeVideo.currentTime = 0;
+
+    }
+
+    catch (error) {}
+
+
+    /*
+      Pause background music so
+      apologize.mp4 audio can be heard.
+    */
+
+    pauseMusic();
+
+
+    apologizeVideo
+      .play()
+      .catch((error) => {
+
+        console.log(
+          "Apology video could not play:",
+          error
+        );
+
+      });
+
+
+    return;
+
+  }
+
+
+  /* ===================================================
+     TEXT / QUOTE
+  =================================================== */
+
+  if (
+    item.type ===
+    "quote"
+  ) {
+
+    /*
+      Put text inside message area.
+    */
+
+    wishTitle.textContent =
+      item.content.title;
+
+
+    wishText.textContent =
+      item.content.text;
+
+
+    /*
+      Show text.
+    */
 
     birthdayMessage.classList.add(
-        "message-change"
+      "active"
     );
 
 
     /*
-       Resume background music after YouTube
+      Background music continues
+      while reading the quote.
     */
 
-    resumeBackgroundMusic();
+    resumeMusic();
+
+
+    return;
+
+  }
 
 }
 
 
 /* =====================================================
-   RENDER CURRENT CONTENT
+   WISHING VIDEO ENDED
 ===================================================== */
 
-function renderContent() {
+wishingVideo.addEventListener(
+  "ended",
 
-    const item =
-        contentSequence[currentContentIndex];
+  () => {
 
+    /*
+      Resume background music
+      after wishing.mp4 ends.
+    */
 
-    if (!item) return;
+    resumeMusic();
 
-
-    /* -------------------------
-       KAZUHA
-    ------------------------- */
-
-    if (item.type === "kazuha") {
-
-        showKazuha();
-
-        return;
-    }
+  }
+);
 
 
-    /* -------------------------
-       YOUTUBE
-    ------------------------- */
+/* =====================================================
+   APOLOGY VIDEO ENDED
+===================================================== */
 
-    if (item.type === "youtube") {
+apologizeVideo.addEventListener(
+  "ended",
 
-        showYouTubeVideo(
-            item.video
-        );
+  () => {
 
-        return;
-    }
+    /*
+      Resume background music
+      after apologize.mp4 ends.
+    */
 
+    resumeMusic();
 
-    /* -------------------------
-       QUOTE
-    ------------------------- */
-
-    if (item.type === "quote") {
-
-        showQuote(
-            item.title,
-            item.text
-        );
-
-    }
-
-}
+  }
+);
 
 
 /* =====================================================
    NEXT CONTENT
 ===================================================== */
 
-function showNextContent() {
+function nextContent() {
 
-    currentContentIndex++;
-
-
-    /*
-       After item 7,
-       return to item 0.
-    */
-
-    if (
-        currentContentIndex >=
-        contentSequence.length
-    ) {
-
-        currentContentIndex = 0;
-
-    }
+  contentStep++;
 
 
-    renderContent();
+  /*
+    After second loop,
+    return to first loop.
+  */
+
+  if (
+    contentStep >=
+    contentSequence.length
+  ) {
+
+    contentStep = 0;
+
+  }
+
+
+  showContent(
+    contentStep
+  );
 
 }
 
 
 /* =====================================================
-   CHANGE IMAGE
+   NEXT IMAGE
 ===================================================== */
 
 function changeToNextImage() {
 
-    currentImageIndex++;
+  currentImageIndex++;
 
 
-    if (
-        currentImageIndex >=
-        images.length
-    ) {
+  /*
+    image4 → image1
+  */
 
-        currentImageIndex = 0;
+  if (
+    currentImageIndex >=
+    images.length
+  ) {
 
-    }
+    currentImageIndex = 0;
 
-
-    /*
-       Small fade when changing image.
-    */
-
-    changingImage.style.opacity = "0";
+  }
 
 
-    setTimeout(() => {
-
-        changingImage.src =
-            images[currentImageIndex];
-
-
-        changingImage.style.opacity = "1";
-
-    }, 150);
+  changingImage.src =
+    images[currentImageIndex];
 
 }
 
 
 /* =====================================================
-   PRELOAD IMAGES
-===================================================== */
-
-function preloadImages() {
-
-    images.forEach((src) => {
-
-        const img = new Image();
-
-        img.src = src;
-
-    });
-
-}
-
-
-preloadImages();
-
-
-/* =====================================================
-   MEASURE SLIDER
+   MEASUREMENTS
 ===================================================== */
 
 function getMeasurements() {
 
-    const railRect =
-        rail.getBoundingClientRect();
+  const railRect =
+    rail.getBoundingClientRect();
 
 
-    const thumbRect =
-        thumb.getBoundingClientRect();
+  const thumbRect =
+    thumb.getBoundingClientRect();
 
 
-    const padding = 6;
+  const padding =
+    6;
 
 
-    const maxMove =
+  const maxMove =
 
-        railRect.height -
+    railRect.height -
 
-        thumbRect.height -
+    thumbRect.height -
 
-        (padding * 2);
+    (padding * 2);
 
 
-    return {
+  return {
 
-        railRect,
+    railRect,
 
-        thumbRect,
+    thumbRect,
 
-        padding,
+    padding,
 
-        maxMove
+    maxMove
 
-    };
+  };
 
 }
 
 
 /* =====================================================
-   UPDATE SLIDER + FALLING IMAGE
+   UPDATE SCENE
 ===================================================== */
+
+/*
+
+  progress = 0
+
+  Slider:
+  top
+
+  Photo:
+  above / hidden
+
+
+  progress = 1
+
+  Slider:
+  bottom
+
+  Photo:
+  completely covering content
+
+*/
 
 function updateScene() {
 
-    const {
-        maxMove
-    } = getMeasurements();
+  const {
+    maxMove
+  } =
+    getMeasurements();
 
 
-    /* Slider movement */
+  /* ===================================================
+     SLIDER POSITION
+  =================================================== */
 
-    const sliderY =
-        progress * maxMove;
+  const sliderY =
 
+    progress *
 
-    thumb.style.transform =
-        `translateY(${sliderY}px)`;
-
-
-    /*
-       Image starts above the content.
-
-       progress = 0
-       image = -105%
-
-       progress = 1
-       image = 0%
-
-       Therefore pulling the slider down
-       makes the image fall down.
-    */
-
-    const imageY =
-        -105 + (progress * 105);
+    maxMove;
 
 
-    fallingImage.style.transform =
-        `translateY(${imageY}%)`;
+  thumb.style.transform =
+
+    `translateY(${sliderY}px)`;
+
+
+  /* ===================================================
+     IMAGE POSITION
+  =================================================== */
+
+  const imageY =
+
+    -105 +
+
+    (
+      progress *
+      105
+    );
+
+
+  fallingImage.style.transform =
+
+    `translateY(${imageY}%)`;
 
 }
 
@@ -763,44 +925,66 @@ function updateScene() {
 
 function startDrag(event) {
 
-    if (animationRunning) return;
+  /*
+    Prevent dragging while
+    bounce animation runs.
+  */
+
+  if (animationRunning) {
+    return;
+  }
 
 
-    /*
-       Starting the music here is important because
-       browsers allow audio after user interaction.
-    */
+  /*
+    First interaction starts
+    background music.
+  */
 
-    startBackgroundMusic();
-
-
-    dragging = true;
+  startMusic();
 
 
-    thumb.classList.add(
-        "dragging"
+  dragging =
+    true;
+
+
+  thumb.classList.add(
+    "dragging"
+  );
+
+
+  /*
+    Remember where user grabbed
+    the slider.
+  */
+
+  const thumbRect =
+    thumb.getBoundingClientRect();
+
+
+  pointerOffset =
+
+    event.clientY -
+
+    thumbRect.top;
+
+
+  /*
+    Keep pointer attached to
+    slider during drag.
+  */
+
+  try {
+
+    thumb.setPointerCapture(
+      event.pointerId
     );
 
+  }
 
-    const thumbRect =
-        thumb.getBoundingClientRect();
-
-
-    pointerOffset =
-        event.clientY -
-        thumbRect.top;
+  catch (error) {}
 
 
-    try {
-
-        thumb.setPointerCapture(
-            event.pointerId
-        );
-
-    } catch (error) {}
-
-
-    event.preventDefault();
+  event.preventDefault();
 
 }
 
@@ -811,57 +995,88 @@ function startDrag(event) {
 
 function moveDrag(event) {
 
-    if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
 
 
-    const {
+  const {
 
-        railRect,
+    railRect,
 
-        padding,
+    padding,
+
+    maxMove
+
+  } =
+    getMeasurements();
+
+
+  /*
+    Calculate slider position.
+  */
+
+  let y =
+
+    event.clientY -
+
+    railRect.top -
+
+    padding -
+
+    pointerOffset;
+
+
+  /*
+    Keep slider inside rail.
+  */
+
+  y =
+    Math.max(
+
+      0,
+
+      Math.min(
+
+        y,
 
         maxMove
 
-    } = getMeasurements();
+      )
 
-
-    let y =
-
-        event.clientY -
-
-        railRect.top -
-
-        padding -
-
-        pointerOffset;
-
-
-    /*
-       Prevent slider from leaving rail.
-    */
-
-    y = Math.max(
-        0,
-        Math.min(
-            y,
-            maxMove
-        )
     );
 
 
+  /*
+    Convert position to
+    progress 0 → 1.
+  */
+
+  if (
+    maxMove <= 0
+  ) {
+
     progress =
+      0;
 
-        maxMove <= 0
+  }
 
-            ? 0
+  else {
 
-            : y / maxMove;
+    progress =
+      y / maxMove;
+
+  }
 
 
-    updateScene();
+  /*
+    Move both photo and slider.
+  */
+
+  updateScene();
 
 
-    event.preventDefault();
+  event.preventDefault();
 
 }
 
@@ -872,35 +1087,48 @@ function moveDrag(event) {
 
 function endDrag(event) {
 
-    if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
 
 
-    dragging = false;
+  dragging =
+    false;
 
 
-    thumb.classList.remove(
-        "dragging"
-    );
+  thumb.classList.remove(
+    "dragging"
+  );
 
 
-    try {
+  /*
+    Release captured pointer.
+  */
 
-        if (
-            thumb.hasPointerCapture(
-                event.pointerId
-            )
-        ) {
+  try {
 
-            thumb.releasePointerCapture(
-                event.pointerId
-            );
+    if (
+      thumb.hasPointerCapture(
+        event.pointerId
+      )
+    ) {
 
-        }
+      thumb.releasePointerCapture(
+        event.pointerId
+      );
 
-    } catch (error) {}
+    }
+
+  }
+
+  catch (error) {}
 
 
-    bounceBack();
+  /*
+    Bounce back upward.
+  */
+
+  bounceBack();
 
 }
 
@@ -911,250 +1139,291 @@ function endDrag(event) {
 
 function bounceBack() {
 
-    animationRunning = true;
+  animationRunning =
+    true;
 
 
-    const startProgress = progress;
+  /*
+    Store how far slider
+    was pulled down.
+  */
+
+  const startProgress =
+    progress;
+
+
+  /*
+    Ignore tiny accidental pulls.
+  */
+
+  const shouldReveal =
+
+    startProgress >=
+    revealThreshold;
+
+
+  /*
+    Bounce duration.
+  */
+
+  const duration =
+    700;
+
+
+  const startTime =
+    performance.now();
+
+
+  /*
+    IMPORTANT:
+
+    Change the content while
+    the photo is still covering
+    the background.
+
+    Therefore the new content is
+    revealed naturally when the
+    photo moves upward.
+  */
+
+  if (shouldReveal) {
+
+    nextContent();
+
+  }
+
+
+  /* ===================================================
+     ANIMATION
+  =================================================== */
+
+  function animate(now) {
+
+    const elapsed =
+
+      now -
+
+      startTime;
+
+
+    const t =
+
+      Math.min(
+
+        elapsed /
+
+        duration,
+
+        1
+
+      );
 
 
     /*
-       Only change content when the user
-       actually pulls the slider.
+      Elastic bounce.
     */
 
-    const shouldReveal =
-
-        startProgress >=
-        revealThreshold;
-
-
-    const duration = 700;
-
-
-    const startTime =
-        performance.now();
+    const eased =
+      easeOutElastic(t);
 
 
     /*
-       Change content while image begins
-       moving upward.
+      Move back toward top.
+    */
 
-       This makes the falling image hide
-       the content transition.
+    progress =
+
+      startProgress *
+
+      (1 - eased);
+
+
+    /*
+      Small overshoot.
+    */
+
+    progress =
+
+      Math.max(
+
+        -0.035,
+
+        progress
+
+      );
+
+
+    /*
+      Move slider + photo.
+    */
+
+    updateScene();
+
+
+    /* =================================================
+       CONTINUE
+    ================================================= */
+
+    if (t < 1) {
+
+      animationFrame =
+
+        requestAnimationFrame(
+          animate
+        );
+
+
+      return;
+
+    }
+
+
+    /* =================================================
+       FINISHED
+    ================================================= */
+
+    progress =
+      0;
+
+
+    updateScene();
+
+
+    animationRunning =
+      false;
+
+
+    animationFrame =
+      null;
+
+
+    /*
+      The photo is now completely
+      above the visible area.
+
+      Switch to the next image here
+      so the change isn't visible.
     */
 
     if (shouldReveal) {
 
-        showNextContent();
+      changeToNextImage();
 
     }
 
-
-    function animate(now) {
-
-        const elapsed =
-            now - startTime;
+  }
 
 
-        const t = Math.min(
-            elapsed / duration,
-            1
-        );
+  animationFrame =
 
-
-        const eased =
-            easeOutElastic(t);
-
-
-        progress =
-
-            startProgress *
-            (1 - eased);
-
-
-        /*
-           Allows tiny overshoot for
-           elastic bounce effect.
-        */
-
-        progress = Math.max(
-            -0.035,
-            progress
-        );
-
-
-        updateScene();
-
-
-        if (t < 1) {
-
-            animationFrame =
-                requestAnimationFrame(
-                    animate
-                );
-
-            return;
-        }
-
-
-        /*
-           Return exactly to top.
-        */
-
-        progress = 0;
-
-
-        updateScene();
-
-
-        animationRunning = false;
-
-
-        animationFrame = null;
-
-
-        /*
-           Change image after bounce finishes.
-        */
-
-        if (shouldReveal) {
-
-            changeToNextImage();
-
-        }
-
-    }
-
-
-    animationFrame =
-        requestAnimationFrame(
-            animate
-        );
-
-}
-
-
-/* =====================================================
-   ELASTIC BOUNCE
-===================================================== */
-
-function easeOutElastic(t) {
-
-    const c4 =
-        (2 * Math.PI) / 3;
-
-
-    if (t === 0) {
-
-        return 0;
-
-    }
-
-
-    if (t === 1) {
-
-        return 1;
-
-    }
-
-
-    return (
-
-        Math.pow(
-            2,
-            -10 * t
-        )
-
-        *
-
-        Math.sin(
-
-            (t * 10 - 0.75)
-
-            *
-
-            c4
-
-        )
-
-        +
-
-        1
-
+    requestAnimationFrame(
+      animate
     );
 
 }
 
 
 /* =====================================================
-   EVENTS
+   ELASTIC EASING
 ===================================================== */
 
-thumb.style.touchAction = "none";
+function easeOutElastic(t) {
 
+  const c4 =
+
+    (2 * Math.PI) /
+
+    3;
+
+
+  if (t === 0) {
+    return 0;
+  }
+
+
+  if (t === 1) {
+    return 1;
+  }
+
+
+  return (
+
+    Math.pow(
+
+      2,
+
+      -10 * t
+
+    )
+
+    *
+
+    Math.sin(
+
+      (
+        t * 10 -
+        0.75
+      )
+
+      *
+
+      c4
+
+    )
+
+    +
+
+    1
+
+  );
+
+}
+
+
+/* =====================================================
+   POINTER EVENTS
+===================================================== */
 
 thumb.addEventListener(
-    "pointerdown",
-    startDrag
+  "pointerdown",
+  startDrag
 );
 
 
 thumb.addEventListener(
-    "pointermove",
-    moveDrag
+  "pointermove",
+  moveDrag
 );
 
 
 thumb.addEventListener(
-    "pointerup",
-    endDrag
+  "pointerup",
+  endDrag
 );
 
 
 thumb.addEventListener(
-    "pointercancel",
-    endDrag
+  "pointercancel",
+  endDrag
 );
 
 
 /* =====================================================
-   WINDOW RESIZE
+   RESIZE
 ===================================================== */
 
 window.addEventListener(
-    "resize",
-    () => {
+  "resize",
 
-        if (!animationRunning) {
+  () => {
 
-            updateScene();
+    if (!animationRunning) {
 
-        }
+      updateScene();
 
     }
-);
 
-
-/* =====================================================
-   EXTRA USER INTERACTION FOR MUSIC
-
-   Useful for browsers that block audio on first attempt.
-===================================================== */
-
-document.addEventListener(
-    "pointerdown",
-    () => {
-
-        if (!musicStarted) {
-
-            startBackgroundMusic();
-
-        }
-
-    },
-    {
-        once: false
-    }
+  }
 );
 
 
@@ -1163,46 +1432,31 @@ document.addEventListener(
 ===================================================== */
 
 /*
-   Make sure all content begins hidden
-   except Kazuha.
-*/
-
-currentContentIndex = 0;
-
-
-/*
-   Put image1 as starting image.
-*/
-
-currentImageIndex = 0;
-
-changingImage.src =
-    images[currentImageIndex];
-
-
-/*
-   Position slider and falling image.
+  Position slider and photo.
 */
 
 updateScene();
 
 
 /*
-   Show Kazuha first.
+  Show Kazuha first.
 */
 
-renderContent();
+showContent(0);
 
 
 /*
-   Kazuha is muted in HTML,
-   so autoplay should normally work.
+  Try to autoplay Kazuha.
+
+  Kazuha should have:
+  muted
+  autoplay
+  loop
+  playsinline
+
+  in your HTML.
 */
 
-if (kazuhaVideo) {
-
-    kazuhaVideo
-        .play()
-        .catch(() => {});
-
-}
+kazuhaVideo
+  .play()
+  .catch(() => {});
