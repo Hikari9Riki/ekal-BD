@@ -2,278 +2,268 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
 
-  <meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  />
+    <title>Happy Birthday Ekalllll</title>
 
-  <title>Happy Birthday Ekalllll 🎂</title>
-
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  />
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 
 <body>
 
-  <!-- =====================================================
-       WHOLE BIRTHDAY AREA
-  ====================================================== -->
+    <!-- ==========================================
+         BIRTHDAY PAGE
+    =========================================== -->
 
-  <div class="birthday-wrapper">
+    <div class="birthday-wrapper">
 
-
-    <!-- =================================================
-         TITLE ABOVE THE BOX
-    ================================================== -->
-
-    <h1 class="birthday-title">
-      Happy Birthday Ekalllll 🎂
-    </h1>
+        <!-- TITLE ABOVE THE BOX -->
+        <h1 class="birthday-title">
+            Happy Birthday Ekalllll 🎂
+        </h1>
 
 
+        <!-- ======================================
+             PHONE / MAIN BOX
+        ======================================= -->
 
-    <!-- =================================================
-         MAIN BOX
-    ================================================== -->
+        <div class="phone-frame">
 
-    <div class="phone-frame">
-
-      <div class="main-layout">
-
-
-        <!-- =================================================
-             LEFT SIDE
-        ================================================== -->
-
-        <div class="left-side">
+            <div class="main-layout">
 
 
-          <!-- =================================================
-               CONTENT STAGE
+                <!-- ==================================
+                     LEFT SIDE
+                =================================== -->
 
-               This area switches between:
-
-               - kazuha.mp4
-               - wishing.mp4
-               - apologize.mp4
-               - birthday quote
-               - picture quote
-          ================================================== -->
-
-          <div
-            class="content-stage"
-            id="contentStage"
-          >
+                <div class="left-side">
 
 
-            <!-- =============================================
-                 KAZUHA VIDEO
-            ============================================== -->
+                    <!-- ==============================
+                         CONTENT UNDER THE FALLING IMAGE
+                    =============================== -->
 
-            <video
-              id="kazuhaVideo"
-              class="stage-content stage-video active"
-              src="assets/video/Kazuha.mp4"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-            >
+                    <div
+                        class="content-stage"
+                        id="contentStage"
+                    >
 
-              Your browser does not support video.
 
-            </video>
+                        <!-- ==========================
+                             1. KAZUHA VIDEO
+                        =========================== -->
+
+                        <video
+                            id="kazuhaVideo"
+                            class="stage-content stage-video active"
+                            src="assets/video/kazuha.mp4"
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                            preload="auto"
+                        >
+                        </video>
 
 
 
-            <!-- =============================================
-                 WISHING VIDEO
-            ============================================== -->
+                        <!-- ==========================
+                             2. WISHING YOUTUBE VIDEO
+                        =========================== -->
 
-            <video
-              id="wishingVideo"
-              class="stage-content stage-video"
-              src="assets/video/wishing.mp4"
-              playsinline
-              preload="auto"
-            >
+                        <iframe
+                            id="wishingVideo"
+                            class="stage-content stage-video youtube-video"
 
-              Your browser does not support video.
+                            src="https://www.youtube.com/embed/Y8gJQediglU?enablejsapi=1&playsinline=1&rel=0"
 
-            </video>
+                            title="Birthday Wishing Video"
 
+                            frameborder="0"
 
+                            allow="
+                                accelerometer;
+                                autoplay;
+                                clipboard-write;
+                                encrypted-media;
+                                gyroscope;
+                                picture-in-picture;
+                                web-share
+                            "
 
-            <!-- =============================================
-                 APOLOGY VIDEO
-            ============================================== -->
-
-            <video
-              id="apologizeVideo"
-              class="stage-content stage-video"
-              src="assets/video/apologize.mp4"
-              playsinline
-              preload="auto"
-            >
-
-              Your browser does not support video.
-
-            </video>
+                            allowfullscreen
+                        >
+                        </iframe>
 
 
 
-            <!-- =============================================
-                 QUOTE / TEXT AREA
-            ============================================== -->
+                        <!-- ==========================
+                             3. APOLOGY YOUTUBE VIDEO
+                        =========================== -->
 
-            <div
-              id="birthdayMessage"
-              class="stage-content birthday-message"
-            >
+                        <iframe
+                            id="apologizeVideo"
+                            class="stage-content stage-video youtube-video"
 
-              <h2 id="wishTitle">
-                Happy Birthday ✨
-              </h2>
+                            src="https://www.youtube.com/embed/EFTQp5J4z4U?enablejsapi=1&playsinline=1&rel=0"
+
+                            title="Apology Video"
+
+                            frameborder="0"
+
+                            allow="
+                                accelerometer;
+                                autoplay;
+                                clipboard-write;
+                                encrypted-media;
+                                gyroscope;
+                                picture-in-picture;
+                                web-share
+                            "
+
+                            allowfullscreen
+                        >
+                        </iframe>
 
 
-              <p id="wishText">
-                Wishing you happiness and beautiful memories.
-              </p>
+
+                        <!-- ==========================
+                             4. QUOTE / MESSAGE
+                        =========================== -->
+
+                        <div
+                            id="birthdayMessage"
+                            class="stage-content birthday-message"
+                        >
+
+                            <div class="birthday-message-inner">
+
+                                <span class="birthday-kicker">
+                                    for you ♡
+                                </span>
+
+                                <h2 id="wishTitle">
+                                    Happy Birthday!
+                                </h2>
+
+                                <p id="wishText">
+                                    May your day be filled with happiness and beautiful memories.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- ==============================
+                         FALLING IMAGE
+                    =============================== -->
+
+                    <div
+                        class="image-cover"
+                        id="fallingImage"
+                    >
+
+                        <img
+                            id="changingImage"
+                            src="assets/images/image1.png"
+                            alt="Birthday memory"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ==================================
+                     RIGHT SIDE / SLIDER
+                =================================== -->
+
+                <div class="right-side">
+
+                    <div
+                        class="slider-rail"
+                        id="sliderRail"
+                    >
+
+
+                        <!-- Slider line -->
+
+                        <div class="rail-line"></div>
+
+
+
+                        <!-- Slider dots -->
+
+                        <div class="rail-dots">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+
+
+                        <!-- Slider button -->
+
+                        <div
+                            class="slider-thumb"
+                            id="sliderThumb"
+                            aria-label="Pull birthday slider"
+                        >
+
+                            🍁
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
 
             </div>
-
-
-          </div>
-
-
-
-          <!-- =================================================
-               MOVING PHOTO
-
-               The photo comes down when the slider
-               is pulled and moves back up after release.
-          ================================================== -->
-
-          <div
-            class="image-cover"
-            id="fallingImage"
-          >
-
-            <img
-              id="changingImage"
-              src="assets/images/image1.jpg"
-              alt="Birthday memory"
-              draggable="false"
-            />
-
-          </div>
-
 
         </div>
-
-
-
-        <!-- =================================================
-             RIGHT SIDE
-        ================================================== -->
-
-        <div class="right-side">
-
-
-          <!-- =================================================
-               SLIDER RAIL
-          ================================================== -->
-
-          <div
-            class="slider-rail"
-            id="sliderRail"
-          >
-
-
-            <!-- Rail line -->
-
-            <div class="rail-line"></div>
-
-
-
-            <!-- Decorative dots -->
-
-            <div class="rail-dots">
-
-              <span></span>
-
-              <span></span>
-
-              <span></span>
-
-              <span></span>
-
-              <span></span>
-
-            </div>
-
-
-
-            <!-- =============================================
-                 SLIDER BUTTON
-            ============================================== -->
-
-            <div
-              class="slider-thumb"
-              id="sliderThumb"
-            >
-
-              🍁
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </div>
 
     </div>
 
 
-  </div>
+
+    <!-- ==========================================
+         BACKGROUND MUSIC
+    =========================================== -->
+
+    <audio
+        id="backgroundMusic"
+        src="assets/audio/music.mp3"
+        preload="auto"
+        loop
+    >
+    </audio>
 
 
 
-  <!-- =====================================================
-       BACKGROUND MUSIC
-  ====================================================== -->
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
 
-  <audio
-    id="backgroundMusic"
-    src="assets/audio/music.mp3"
-    preload="auto"
-    loop
-  >
-
-    Your browser does not support audio.
-
-  </audio>
-
-
-
-  <!-- =====================================================
-       JAVASCRIPT
-  ====================================================== -->
-
-  <script src="js/script.js"></script>
-
+    <script src="js/script.js"></script>
 
 </body>
 
